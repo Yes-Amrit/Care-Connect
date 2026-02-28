@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Care Connect - AI Powered Dental Assistant",
   description: "Get instant dental advice through voice calls with our AI assistant. Available 24/7.",
+  icons: {
+    icon: '/logo.png',  // Corrected path
+    apple: '/logo.png', // Corrected path
+  },
 };
 
 export default function RootLayout({
