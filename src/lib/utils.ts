@@ -4,3 +4,27 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export function generateAvatar(name: string, gender: "MALE" | "FEMALE") {
+  const username = name.replace(/\s+/g, "").toLowerCase();
+  const base = "https://avatar.iran.liara.run/public";
+  if (gender === "FEMALE") return `${base}/girl?username=${username}`;
+  // default to boy
+  return `${base}/boy?username=${username}`;
+}
+
+export const formatPhoneNumber = (value: string) => {
+  if (!value) return value;
+
+  let phoneNumber = value.replace(/[^\d]/g, "");
+
+  if (phoneNumber.startsWith("91") && phoneNumber.length > 10) {
+    phoneNumber = phoneNumber.slice(2);
+  }
+
+  if (phoneNumber.length <= 5) {
+    return `+91 ${phoneNumber}`;
+  }
+
+  return `+91 ${phoneNumber.slice(0, 5)} ${phoneNumber.slice(5, 10)}`;
+};
