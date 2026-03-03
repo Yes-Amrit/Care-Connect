@@ -18,13 +18,46 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import AddDoctorDialog from "./AddDoctorDialog";
+import EditDoctorDialog from "./EditDoctorDialog";
+import { Doctor } from "@prisma/client";
+
+const maleImages = [
+  "/male-img1.jpg",
+  "/male-img2.jpg",
+  "/male-img3.jpg",
+  "/male-img4.jpg",
+  "/male-img5.jpg",
+  "/male-img6.jpg",
+];
+
+const femaleImages = [
+  "/female-img1.jpg",
+  "/female-img2.jpg",
+  "/female-img3.jpg",
+  "/female-img4.jpg",
+  "/female-img5.jpg",
+  "/female-img6.jpg",
+  "/female-img7.jpg",
+];
+
+const getImageById = (gender: string, id: string) => {
+  const images = gender === "MALE" ? maleImages : femaleImages;
+
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash += id.charCodeAt(i);
+  }
+
+  const index = hash % images.length;
+  return images[index];
+};
 
 function DoctorsManagement() {
   const { data: doctors = [] } = useGetDoctors();
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null >(null);
 
   const handleEditDoctor = (doctor: any) => {
     setSelectedDoctor(doctor);
@@ -62,8 +95,6 @@ function DoctorsManagement() {
         <CardContent>
           <div className="space-y-4">
             {doctors.map((doctor) => {
-              const index = doctor.id.length % 99; // ✅ FIXED: moved inside map
-
               return (
                 <div
                   key={doctor.id}
@@ -71,11 +102,7 @@ function DoctorsManagement() {
                 >
                   <div className="flex items-center gap-4">
                     <Image
-                      src={
-                        doctor.gender === "MALE"
-                          ? `https://randomuser.me/api/portraits/men/${index}.jpg`
-                          : `https://randomuser.me/api/portraits/women/${index}.jpg`
-                      }
+                      src={getImageById(doctor.gender, doctor.id)}
                       alt={doctor.name}
                       width={48}
                       height={48}
@@ -145,6 +172,12 @@ function DoctorsManagement() {
       <AddDoctorDialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
+      />
+      <EditDoctorDialog
+        key={selectedDoctor?.id}
+        isOpen={isEditDialogOpen}
+        onClose={handleCloseEditDialog}
+        doctor={selectedDoctor}
       />
     </>
   );
