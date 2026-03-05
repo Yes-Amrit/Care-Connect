@@ -21,7 +21,7 @@ function AdminDashboardClient() {
     completedAppointments: appointments.filter((app) => app.status === "COMPLETED").length
   }
 
-  if(doctorsLoading || appointmentLoading) return <p> LOADING... </p>
+  if(doctorsLoading || appointmentLoading) return <LoadingUi />
 
   console.log(doctors, appointments);
   return (
@@ -80,5 +80,34 @@ function LoadingUI() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LoadingUi() {
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-8 pt-24">
+  <div className="space-y-8 animate-pulse">
+    {/* Header Skeleton */}
+    <div className="flex justify-between items-end">
+      <div className="space-y-3">
+        <div className="h-8 w-48 bg-muted rounded-md" />
+        <div className="h-4 w-64 bg-muted/60 rounded-md" />
+      </div>
+      <div className="h-10 w-32 bg-primary/20 rounded-lg" />
+    </div>
+
+    {/* Grid Skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="h-32 bg-muted/40 rounded-xl border border-border" />
+      ))}
+    </div>
+    
+    {/* Large Content Area */}
+    <div className="h-96 bg-muted/20 rounded-2xl border border-dashed border-border flex items-center justify-center">
+       <p className="text-sm text-muted-foreground italic">Assembling your insights...</p>
+    </div>
+  </div>
+</div>
   );
 }
