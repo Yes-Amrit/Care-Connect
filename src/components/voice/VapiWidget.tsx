@@ -36,11 +36,15 @@ function VapiWidget() {
     };
 
     const handleCallEnd = () => {
-      console.log("Call ended");
-      setCallActive(false);
-      setConnecting(false);
-      setIsSpeaking(false);
-      setCallEnded(true);
+    console.log("Call ended");
+
+    setCallActive(false);
+    setConnecting(false);
+    setIsSpeaking(false);
+
+    setTimeout(() => {
+    setCallEnded(true);
+    }, 200);
     };
 
     const handleSpeechStart = () => {
@@ -106,6 +110,7 @@ const toggleCall = async () => {
     } catch (error) {
       console.log("Failed to start call", error);
       setConnecting(false);
+      setCallEnded(false);
     }
   }
 };
@@ -268,7 +273,8 @@ const toggleCall = async () => {
               : "bg-primary hover:bg-primary/90"
           } text-white relative`}
           onClick={toggleCall}
-          disabled={connecting || callEnded}
+          disabled={connecting}
+          
         >
           {connecting && (
             <span className="absolute inset-0 rounded-full animate-ping bg-primary/50 opacity-75"></span>
