@@ -4,14 +4,15 @@ import Navbar from "@/components/Navbar";
 import { useUser } from "@clerk/nextjs";
 import { SettingsIcon } from "lucide-react";
 import { useGetDoctors } from "../hooks/use-doctors";
-import { useGetAppointment } from "../hooks/use-appointments";
+import { useGetAppointments } from "../hooks/use-appointments";
 import AdminStats from "@/components/admin/AdminStats";
 import DoctorsManagement from "@/components/admin/DoctorsManagement";
+import RecentAppointments from "@/components/admin/RecentAppointments";
 
 function AdminDashboardClient() {
   const { user } = useUser();
   const { data:doctors=[], isLoading: doctorsLoading  } = useGetDoctors();
-  const { data:appointments=[], isLoading: appointmentLoading  } = useGetAppointment();
+  const { data:appointments=[], isLoading: appointmentLoading  } = useGetAppointments();
 
   //calculate stats from real Data
   const stats = {
@@ -60,6 +61,7 @@ function AdminDashboardClient() {
           completedAppointments={stats.completedAppointments}
         />
         <DoctorsManagement />
+        <RecentAppointments />
       </div>
     </div>
   );
